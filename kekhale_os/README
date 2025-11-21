@@ -2,3 +2,19 @@
 
 Linux based OS distribution
 Bare minial rootfs (only initramfs)
+
+This is based on the blog: 
+https://popovicu.com/posts/making-a-micro-linux-distro/
+
+This is the linux distribution build from the scratch. 
+
+1) Take upstream mainline linux kernel 
+2) Build the kernel for arm64
+3) Update kernel image location in Makfile
+4) Do make all -> to build init.c and program1.c and any other userspace application
+   and create initramfs cpio archive. 
+5) Do make boot --> to boot kernel with initramfs on qemu system.
+
+Requirements: 
+1) install qemu for arm 
+2) Linux build tools
