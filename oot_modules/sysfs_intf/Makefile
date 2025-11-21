@@ -1,1 +1,1 @@
-obj-y += sysfs_intf.o
+obj-m += sysfs_intf.o

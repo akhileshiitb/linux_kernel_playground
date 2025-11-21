@@ -1,1 +1,1 @@
-obj-y += hrtimers.o
+obj-n += hrtimers.o

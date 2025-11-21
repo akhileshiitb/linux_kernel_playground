@@ -1,1 +1,1 @@
-obj-y += timers.o
+obj-n += timers.o

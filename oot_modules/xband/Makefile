@@ -1,1 +1,1 @@
-obj-y += xband.o
+obj-m += xband.o

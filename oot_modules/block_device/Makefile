@@ -1,1 +1,1 @@
-obj-y += block_device.o
+obj-n += block_device.o

@@ -1,1 +1,1 @@
-obj-y += ioctl_intf.o
+obj-m += ioctl_intf.o

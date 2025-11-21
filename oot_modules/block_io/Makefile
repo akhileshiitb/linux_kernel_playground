@@ -1,3 +1,3 @@
-obj-y += block_io.o
-obj-y += block_io_raw.o
-obj-y += block_io_crypto.o
+obj-n += block_io.o
+obj-n += block_io_raw.o
+obj-n += block_io_crypto.o

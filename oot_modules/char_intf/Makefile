@@ -1,1 +1,1 @@
-obj-y += char_intf.o
+obj-m += char_intf.o

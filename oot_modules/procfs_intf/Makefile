@@ -1,1 +1,1 @@
-obj-y += procfs_intf.o
+obj-m += procfs_intf.o
