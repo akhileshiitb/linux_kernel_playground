@@ -17,4 +17,14 @@ This is the linux distribution build from the scratch.
 
 Requirements: 
 1) install qemu for arm 
-2) Linux build tools
+2) Linux build tools and cross compiler aarch64-linux-gnu-gcc
+(check Makefile for name of the tools) 
+
+
+How to compile Linux kernel: 
+
+Inside linux source: 
+
+1) make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- defconfig
+2) make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- all -j64
+
