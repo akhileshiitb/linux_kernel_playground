@@ -1,2 +1,27 @@
 Collection of various out of tree modules. 
 These modules can be used with Linux LKM (Lodable kernel module framework)
+
+
+How to compile OOT modules: 
+
+Cross compiling for ARM: 
+
+in kernel source tree: 
+
+$ make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- defconfig
+$ make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- prepare
+$ make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- modules_prepare
+
+Sample Makefile: 
+
+[ … code block … ]
+PWD   := $(shell pwd)
+KDIR         := /home/akhipati/source_code/linux-next
+obj-m += helloworld_lkm.o
+
+all:
+        make -C $(KDIR) M=$(PWD) ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- KBUILD_MODPOST_WARN=1 modules
+[ … code block … ]
+
+
+

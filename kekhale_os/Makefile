@@ -1,5 +1,5 @@
 
-KERNEL := linux/arch/arm64/boot/Image 
+KERNEL := ../linux/arch/arm64/boot/Image 
 
 all: userspace initramfs
 
