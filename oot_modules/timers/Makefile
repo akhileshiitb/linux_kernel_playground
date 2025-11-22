@@ -1,1 +1,1 @@
-obj-n += timers.o
+obj-m += timers.o

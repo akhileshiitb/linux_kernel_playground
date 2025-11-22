@@ -35,7 +35,7 @@ static ssize_t	procfs_read(struct file *filep, char __user *usr_buf, size_t coun
 	
 	printk("timer procfs read complete\n");
 
-	del_timer_sync(&timer1);
+	//del_timer_sync(&timer1);
 
 	return 0;
 }
