@@ -1,2 +1,8 @@
 init
 program1
+ls
+mkdir
+cat
+cp
+
+
