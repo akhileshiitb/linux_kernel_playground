@@ -47,11 +47,21 @@ function build_bash() {
 
 }
 
+# build appds from ./apps directory
+function build_apps() {
+	pushd apps
+	for app in *.c
+	do
+		echo "Building app ${app}"
+		APP_OUT=$(echo ${app} | awk -F. '{ print $1 }')
+		${CROSS_COMPILE}-gcc -static -o ${APP_OUT} ${app}
+	done
+	popd
+
+}
+
 function install_programs() {
 
-	# clear out initramfs
-	rm -f initramfs_kekhale
-	mkdir -p initramfs_kekhale
 
 	# get coreutils
 	pushd ${GNU_COREUTILS_PATH}
@@ -60,6 +70,14 @@ function install_programs() {
 
 	# get bash shell
 	cp ${GNU_BASH_PATH}/bash ${INITRAMFS_PATH}/bin/
+
+	# install apps
+	mkdir -p ${INITRAMFS_PATH}/usr/bin
+	cp apps/* ${INITRAMFS_PATH}/usr/bin
+
+	# create VFS directories
+	mkdir -p ${INITRAMFS_PATH}/proc
+	mkdir -p ${INITRAMFS_PATH}/sys
 }
 
 function do_initramfs() {
@@ -73,10 +91,16 @@ function do_initramfs() {
 }
 
 # main 
+#
+# clear out initramfs
+rm -rf initramfs_kekhale
+mkdir -p initramfs_kekhale
 
 build_bash
 
 build_coreutils
+
+build_apps
 
 install_programs
 

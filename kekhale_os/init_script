@@ -1,3 +1,7 @@
 #!/bin/bash
 
+# mount sysfs and procfs filesystems
+mount_vfs
+
+# start a fresh shell
 exec bash
