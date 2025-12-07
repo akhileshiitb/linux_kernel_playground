@@ -33,4 +33,4 @@ clean:
 boot:
 	#qemu-system-aarch64 -machine virt,gic-version=3 -cpu cortex-a57 -smp 4 -m 1G -kernel ../../linux-next/arch/arm64/boot/Image -initrd initramfs.cpio -nographic -append "console=ttyAMA0 earlyprintk=ttyAMA0 root=/dev/ram0 rw" 
 	#qemu-system-aarch64 -machine virt -cpu cortex-a72 -kernel ../../linux-next/arch/arm64/boot/Image -initrd initramfs.cpio -nographic -append "console=ttyAMA0,115200 earlyprintk=ttyAMA0" 
-	qemu-system-aarch64 -machine virt -cpu cortex-a53 -kernel $(KERNEL) -initrd initramfs.cpio -nographic
+	qemu-system-aarch64 -machine virt -cpu cortex-a53 -kernel $(KERNEL) -m 1G -initrd initramfs.cpio -nographic

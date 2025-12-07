@@ -7,6 +7,8 @@ GNU_COREUTILS_PATH=coreutils/coreutils-9.9
 GNU_BASH_PATH=shell/bash-5.3 
 CROSS_COMPILE=aarch64-linux-gnu
 TH_NUM=64
+INITRAMFS_PATH=$(realpath initramfs_kekhale)
+COREUTIL_INSTALL_PATH=${INITRAMFS_PATH}
 #######################
 
 function pr_banner() {
@@ -46,15 +48,37 @@ function build_bash() {
 }
 
 function install_programs() {
-	cp ${GNU_BASH_PATH}/bash .
-	mv bash init # out init program is bash
+
+	# clear out initramfs
+	rm -f initramfs_kekhale
+	mkdir -p initramfs_kekhale
+
+	# get coreutils
+	pushd ${GNU_COREUTILS_PATH}
+	make install
+	popd
+
+	# get bash shell
+	cp ${GNU_BASH_PATH}/bash ${INITRAMFS_PATH}/bin/
+}
+
+function do_initramfs() {
+	# copy init script to /init
+	cp init ${INITRAMFS_PATH}
+	
+	# generate initramfs cpio archive for linux
+	pushd ${INITRAMFS_PATH}
+	find . | cpio -o -H newc > ../initramfs.cpio
+	popd
 }
 
 # main 
 
-build_bash
+#build_bash
 
-build_coreutils
+#build_coreutils
 
 install_programs
+
+do_initramfs
 
