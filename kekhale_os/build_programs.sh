@@ -9,6 +9,9 @@ CROSS_COMPILE=aarch64-linux-gnu
 TH_NUM=64
 INITRAMFS_PATH=$(realpath initramfs_kekhale)
 COREUTIL_INSTALL_PATH=${INITRAMFS_PATH}
+KERNEL_SRC=linux/linux
+KERNEL=${KERNEL_SRC}/arch/arm64/boot/Image
+CLEAN=$1
 #######################
 
 function pr_banner() {
@@ -95,11 +98,32 @@ function do_initramfs() {
 	popd
 }
 
+# function to boot distribution in qemu
+function boot_qemu() {
+	qemu-system-aarch64 -machine virt -cpu cortex-a53 -kernel ${KERNEL} -m 1G -initrd initramfs.cpio -nographic
+}
+
+# function to compile the linux kernel
+function compile_kernel() {
+	pushd ${KERNEL_SRC}
+
+	if [ "${CLEAN}" = "c" ]
+	then
+		make ARCH=arm64 CROSS_COMPILE=${CROSS_COMPILE}- distclean
+	fi
+
+	make ARCH=arm64 CROSS_COMPILE=${CROSS_COMPILE}- defconfig
+	make ARCH=arm64 CROSS_COMPILE=${CROSS_COMPILE}- all -j${TH_NUM}
+	popd
+}
+
 # main 
 #
 # clear out initramfs
 rm -rf initramfs_kekhale
 mkdir -p initramfs_kekhale
+
+compile_kernel
 
 build_bash
 
@@ -110,4 +134,10 @@ build_apps
 install_programs
 
 do_initramfs
+
+if [ $? = 0 ]
+then
+	boot_qemu
+fi
+
 
