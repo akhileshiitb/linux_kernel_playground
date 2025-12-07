@@ -64,7 +64,7 @@ function install_programs() {
 
 function do_initramfs() {
 	# copy init script to /init
-	cp init ${INITRAMFS_PATH}
+	cp init_script ${INITRAMFS_PATH}/init
 	
 	# generate initramfs cpio archive for linux
 	pushd ${INITRAMFS_PATH}
