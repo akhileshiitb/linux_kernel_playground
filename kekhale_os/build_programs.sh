@@ -49,6 +49,7 @@ function build_bash() {
 
 # build appds from ./apps directory
 function build_apps() {
+	pr_banner "Building Apps"
 	pushd apps
 	for app in *.c
 	do
@@ -57,11 +58,13 @@ function build_apps() {
 		${CROSS_COMPILE}-gcc -static -o ${APP_OUT} ${app}
 	done
 	popd
+	pr_banner_end
 
 }
 
 function install_programs() {
 
+	pr_banner "Installing programs"
 
 	# get coreutils
 	pushd ${GNU_COREUTILS_PATH}
@@ -78,6 +81,8 @@ function install_programs() {
 	# create VFS directories
 	mkdir -p ${INITRAMFS_PATH}/proc
 	mkdir -p ${INITRAMFS_PATH}/sys
+
+	pr_banner_end
 }
 
 function do_initramfs() {
