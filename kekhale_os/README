@@ -28,3 +28,42 @@ Inside linux source:
 1) make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- defconfig
 2) make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- all -j64
 
+How to compile bash shell:
+
+1) Get GNU bash from 
+https://ftp.gnu.org/gnu/bash/
+GNU Bash: https://www.gnu.org/software/bash/
+
+2) Cross compile GNU bash: 
+	make distclean
+	./configure --host=aarch64-linux-gnu --enable-static-link
+	make all -j$(nproc)
+
+--host options indicates to use cross complication for aarch64(arm64) target
+--enable-static-link : Compile and link statically. Do not depend on target system libraries.
+
+3) Binary will be - bash , in the same directory.
+
+How to compile GNU coreutils:
+GNU coreutils are collection of bare minimal userspace programs such as ls, cp, mkdir etc.
+
+1) Download GNU coreutils:
+https://ftp.gnu.org/gnu/coreutils/
+GNU coreutils: https://www.gnu.org/software/coreutils/
+
+2) Cross compile GNU coreutils:
+	make distclean
+	./configure   --host=aarch64-linux-gnu   --prefix=$(COREUTIL_BINS)  --enable-no-install-program=stdbuf   gl_cv_func_working_mktime=yes   LDFLAGS="-static -pthread -Wl,--allow-multiple-definition"
+	make all -j$(nproc)
+
+To intall: 
+	make install
+
+--prefix : tells where to install generated binaries. Absolute path
+LDFLAGS : To create static library bindings. No shared library usage from target system.
+
+
+* remane bash as init and add it in initramfs.
+on boot bash shell will be launched.
+Also include necessary coreutil programs in initramfs. 
+
