@@ -74,9 +74,9 @@ function do_initramfs() {
 
 # main 
 
-#build_bash
+build_bash
 
-#build_coreutils
+build_coreutils
 
 install_programs
 
