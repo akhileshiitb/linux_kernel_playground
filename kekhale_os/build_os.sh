@@ -27,8 +27,11 @@ function build_coreutils() {
 	pushd ${GNU_COREUTILS_PATH}
 	pr_banner "Building coreutils"
 
-	make distclean
-	./configure   --host=${CROSS_COMPILE} --prefix=${COREUTIL_INSTALL_PATH} --enable-no-install-program=stdbuf gl_cv_func_working_mktime=yes LDFLAGS="-static -pthread -Wl,--allow-multiple-definition"
+	if [ "${CLEAN}" = "c" ]; then
+		make distclean
+		./configure   --host=${CROSS_COMPILE} --prefix=${COREUTIL_INSTALL_PATH} --enable-no-install-program=stdbuf gl_cv_func_working_mktime=yes LDFLAGS="-static -pthread -Wl,--allow-multiple-definition"
+	fi
+
 	make all -j${TH_NUM}
 	
 	pr_banner_end
@@ -41,8 +44,10 @@ function build_bash() {
 	pushd ${GNU_BASH_PATH}
 	pr_banner "Building bash shell"
 
-	make distclean
-	./configure --host=${CROSS_COMPILE} --enable-static-link
+	if [ "${CLEAN}" = "c" ]; then
+		make distclean
+		./configure --host=${CROSS_COMPILE} --enable-static-link
+	fi
 	make all -j${TH_NUM}
 
 	pr_banner_end
@@ -110,9 +115,9 @@ function compile_kernel() {
 	if [ "${CLEAN}" = "c" ]
 	then
 		make ARCH=arm64 CROSS_COMPILE=${CROSS_COMPILE}- distclean
+		make ARCH=arm64 CROSS_COMPILE=${CROSS_COMPILE}- defconfig
 	fi
 
-	make ARCH=arm64 CROSS_COMPILE=${CROSS_COMPILE}- defconfig
 	make ARCH=arm64 CROSS_COMPILE=${CROSS_COMPILE}- all -j${TH_NUM}
 	popd
 }
