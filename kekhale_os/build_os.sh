@@ -12,6 +12,7 @@ COREUTIL_INSTALL_PATH=${INITRAMFS_PATH}
 KERNEL_SRC=linux/linux
 KERNEL=${KERNEL_SRC}/arch/arm64/boot/Image
 CLEAN=$1
+LIBRARY=/usr/${CROSS_COMPILE}/lib
 #######################
 
 function pr_banner() {
@@ -29,7 +30,7 @@ function build_coreutils() {
 
 	if [ "${CLEAN}" = "c" ]; then
 		make distclean
-		./configure   --host=${CROSS_COMPILE} --prefix=${COREUTIL_INSTALL_PATH} --enable-no-install-program=stdbuf gl_cv_func_working_mktime=yes LDFLAGS="-static -pthread -Wl,--allow-multiple-definition"
+		./configure   --host=${CROSS_COMPILE} --prefix=${COREUTIL_INSTALL_PATH}
 	fi
 
 	make all -j${TH_NUM}
@@ -89,6 +90,11 @@ function install_programs() {
 	# create VFS directories
 	mkdir -p ${INITRAMFS_PATH}/proc
 	mkdir -p ${INITRAMFS_PATH}/sys
+
+	# create library folder to keep linker and libraries
+	mkdir -p ${INITRAMFS_PATH}/lib
+	# install shared libraries including linker/loader
+	cp ${LIBRARY}/* ${INITRAMFS_PATH}/lib/
 
 	pr_banner_end
 }
